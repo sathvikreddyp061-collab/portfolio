@@ -190,8 +190,8 @@ export default function Hero() {
             className="max-w-xl text-pretty text-base leading-relaxed text-white/70 md:text-lg"
           >
             Five years architecting <span className="text-white">real-time data systems</span>{" "}
-            for global fintech and US healthcare. Spark on Databricks, Kafka streams, AWS
-            lakehouses, embedded AI on Bedrock — I turn streaming chaos into sub-second
+            for global fintech, US healthcare, and enterprise services.salesforce , cloud, Spark on Databricks, Kafka streams, AWS
+            lakehouses, embedded AI on Bedrock. I turn streaming chaos into sub-second
             decisions.
           </motion.p>
 
