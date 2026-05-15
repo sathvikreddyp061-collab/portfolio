@@ -25,7 +25,7 @@ export default function About() {
           }
           subtitle={
             <>
-              Whether it's a card swipe scoring sub-200ms, a member benefit summary
+              Whether it's a card swipe scoring sub-250ms, a member benefit summary
               refreshing in seconds, or invoices flowing through OCR overnight — the
               fundamentals don't change. Only the constraints do.
             </>

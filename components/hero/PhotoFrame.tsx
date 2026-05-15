@@ -312,7 +312,7 @@ export default function PhotoFrame() {
                 throughput
               </div>
               <div className="font-mono text-xs text-white">
-                <span className="text-neon-cyan">2.4M</span>{" "}
+                <span className="text-neon-cyan">50K</span>{" "}
                 <span className="text-white/55">events/s</span>
               </div>
             </div>

@@ -51,7 +51,7 @@ export const TECH_CLUSTERS: TechCluster[] = [
     tagline: "Distributed compute at petabyte scale",
     logo: "https://api.iconify.design/logos/apache-spark.svg",
     services: [
-      { id: "ss", name: "Structured Streaming", glyph: "SS", blurb: "Micro-batch streams", use: "Sub-second fraud scoring at 2.4M events/s." },
+      { id: "ss", name: "Structured Streaming", glyph: "SS", blurb: "Micro-batch streams", use: "Sub-second fraud scoring at 50K events/s." },
       { id: "ds", name: "Datasets API", glyph: "DS", blurb: "Typed transforms", use: "Strong-typed PySpark transforms across silver layer." },
       { id: "aqe", name: "AQE", glyph: "AQ", blurb: "Adaptive execution", use: "Skew + shuffle adaptation cut nightly cost 38%." },
       { id: "ice", name: "Iceberg", glyph: "IB", blurb: "Open table format", use: "Time travel + schema evolution on the lakehouse." },
@@ -82,7 +82,7 @@ export const TECH_CLUSTERS: TechCluster[] = [
     tagline: "Composing the choreography",
     logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apacheairflow/apacheairflow-original.svg",
     services: [
-      { id: "tg", name: "Task Groups", glyph: "TG", blurb: "Modular DAGs", use: "240+ DAGs sharing reusable claims subgraphs." },
+      { id: "tg", name: "Task Groups", glyph: "TG", blurb: "Modular DAGs", use: "80+ DAGs sharing reusable claims subgraphs." },
       { id: "ds", name: "Datasets", glyph: "DT", blurb: "Data-aware sched", use: "DAGs trigger only when freshness contracts upstream are met." },
       { id: "kp", name: "KubernetesPodOperator", glyph: "KP", blurb: "Per-task isolation", use: "Heavy Spark submissions in ephemeral pods." },
     ],

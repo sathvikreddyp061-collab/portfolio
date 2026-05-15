@@ -211,8 +211,8 @@ export default function Hero() {
             {[
               { k: "5+", v: "Years" },
               { k: "3", v: "Domains" },
-              { k: "120+", v: "Pipelines shipped" },
-              { k: "2.4M", v: "Events/sec peak" },
+              { k: "40+", v: "Pipelines shipped" },
+              { k: "50K", v: "Events/sec peak" },
             ].map((s) => (
               <div key={s.v} className="flex items-baseline gap-2">
                 <span className="font-display text-3xl font-semibold tracking-tight text-white md:text-4xl">

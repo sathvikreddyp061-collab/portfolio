@@ -32,11 +32,11 @@ export const PROJECTS: ProjectCase[] = [
     era: "2024 — Present",
     industry: "Financial Services",
     focus: "Real-time Risk",
-    title: "Sub-second fraud detection on a 2.4M event/sec spine",
+    title: "Sub-second fraud detection on a 50K event/sec spine",
     brief:
       "Re-platformed the firm's real-time risk surface from a batch-heavy legacy stack into an event-native lakehouse with embedded AI document understanding.",
     narrative: [
-      "Card auth, transfers, and onboarding events flow into MSK Kafka topics under strict Avro contracts. Spark Structured Streaming consumes and enriches against Redis-backed feature stores, then scores transactions using SageMaker-hosted models in under 200 ms end-to-end.",
+      "Card auth, transfers, and onboarding events flow into MSK Kafka topics under strict Avro contracts. Spark Structured Streaming consumes and enriches against Redis-backed feature stores, then scores transactions using SageMaker-hosted models in under 250 ms end-to-end.",
       "On the side, KYC document onboarding runs through a Bedrock + Titan pipeline — Rekognition for face match, Titan for embedding the policy corpus, and an agent that reasons over the result with permissioned tools. Decisions land back on Kafka so downstream dashboards, audit, and case management see the same source of truth.",
       "Iceberg on S3 became the lakehouse table format — time travel and schema evolution let analysts time-travel back to the exact state any decision was made. Adaptive Query Execution and partition-aware compaction cut nightly Spark cost 38% over six months.",
     ],
@@ -51,7 +51,7 @@ export const PROJECTS: ProjectCase[] = [
         { id: "feast", label: "Feature store", sub: "Redis · Feast" },
         { id: "iceberg", label: "Iceberg lake", sub: "S3 · gold" },
         { id: "redshift", label: "Redshift", sub: "Risk marts" },
-        { id: "alerts", label: "Alerts + cases", sub: "Sub-200ms" },
+        { id: "alerts", label: "Alerts + cases", sub: "Sub-250ms" },
       ],
       columns: {
         auth: 0,
@@ -89,10 +89,10 @@ export const PROJECTS: ProjectCase[] = [
       ],
     },
     metrics: [
-      { value: "2.4M", label: "events / second peak" },
-      { value: "180", unit: "ms", label: "P99 decision latency" },
+      { value: "50K", label: "events / second peak" },
+      { value: "250", unit: "ms", label: "P99 decision latency" },
       { value: "38", unit: "%", label: "nightly cost reduction" },
-      { value: "11", label: "production models" },
+      { value: "5", label: "production models" },
     ],
     stack: [
       "Spark Structured Streaming",
@@ -121,11 +121,11 @@ export const PROJECTS: ProjectCase[] = [
     focus: "Claims & Member Analytics",
     title: "From batch SSIS to a HIPAA-grade real-time claims lakehouse",
     brief:
-      "Rebuilt a member-and-claim insight platform serving 4M+ members with strict lineage, freshness contracts, and DQ gates — without a single line of regression to compliance posture.",
+      "Rebuilt a member-and-claim insight platform serving 2M+ members with strict lineage, freshness contracts, and DQ gates — without a single line of regression to compliance posture.",
     narrative: [
       "Inbound EDI 837 claims, eligibility files, and member portal events were unified onto a Kafka backbone with Schema Registry. PySpark jobs landed bronze, dbt + Snowflake produced the silver and gold marts, and Great Expectations ran as a hard gate in Airflow before any downstream consumer could read.",
       "We wired a real-time member event stream with Glue Streaming for sub-minute updates to benefit summaries — the highest-impact change for member-portal NPS in two years. Compliance got first-class treatment: row-level masking, lineage in dbt docs, and audit trails in CloudTrail.",
-      "240+ DAGs share a small set of reusable Airflow task groups; SLA misses dropped by half in the first quarter. The dbt semantic layer powers 90+ analyst dashboards without analysts having to think about claims joins.",
+      "80+ DAGs share a small set of reusable Airflow task groups; SLA misses dropped about 30% in the first quarter. The dbt semantic layer powers 30+ analyst dashboards without analysts having to think about claims joins.",
     ],
     pipeline: {
       title: "HIPAA-grade claims + member analytics",
@@ -139,7 +139,7 @@ export const PROJECTS: ProjectCase[] = [
         { id: "ge", label: "Great Expectations", sub: "DQ gates" },
         { id: "dbt", label: "dbt + Snowflake", sub: "silver → gold" },
         { id: "marts", label: "Member 360 marts", sub: "RLS · masking" },
-        { id: "bi", label: "Power BI · Tableau", sub: "90+ dashboards" },
+        { id: "bi", label: "Power BI · Tableau", sub: "30+ dashboards" },
       ],
       columns: {
         edi: 0,
@@ -178,10 +178,10 @@ export const PROJECTS: ProjectCase[] = [
       ],
     },
     metrics: [
-      { value: "4M", unit: "+", label: "members served" },
-      { value: "1.6M", label: "claims processed daily" },
-      { value: "240", unit: "+", label: "Airflow DAGs" },
-      { value: "50", unit: "%", label: "fewer SLA misses" },
+      { value: "2M", unit: "+", label: "members served" },
+      { value: "250K", label: "claims processed daily" },
+      { value: "80", unit: "+", label: "Airflow DAGs" },
+      { value: "30", unit: "%", label: "fewer SLA misses" },
     ],
     stack: [
       "PySpark",
@@ -211,8 +211,8 @@ export const PROJECTS: ProjectCase[] = [
     brief:
       "Built the internal data and automation backbone for a fast-growing services firm — Flask APIs, Celery workers, OCR ingestion, and the SQL marts that nine teams ran on every day.",
     narrative: [
-      "We started with the unglamorous: a unified PostgreSQL warehouse, 200+ SQL transformations, and reporting marts that the operations team trusted enough to make decisions on. Flask APIs and Celery workers replaced spreadsheets with services that finance, HR, and operations could call.",
-      "OCR-based invoice extraction in Python saved roughly 120 hours a month — and pushed me into the practice of treating data quality and human-in-the-loop review as part of the pipeline, not a bolt-on. We shipped the team's first proper CI/CD on GitHub Actions and Docker.",
+      "We started with the unglamorous: a unified PostgreSQL warehouse, 80+ SQL transformations, and reporting marts that the operations team trusted enough to make decisions on. Flask APIs and Celery workers replaced spreadsheets with services that finance, HR, and operations could call.",
+      "OCR-based invoice extraction in Python saved roughly 40 hours a month — and pushed me into the practice of treating data quality and human-in-the-loop review as part of the pipeline, not a bolt-on. We shipped the team's first proper CI/CD on GitHub Actions and Docker.",
       "Small team, real impact, and the foundations of an engineering style that I still carry: ship the boring infrastructure first, observability before features, and never let a pipeline fail silently.",
     ],
     pipeline: {
@@ -223,7 +223,7 @@ export const PROJECTS: ProjectCase[] = [
         { id: "api", label: "Flask APIs", sub: "Internal services" },
         { id: "celery", label: "Celery workers", sub: "Async jobs" },
         { id: "pg", label: "PostgreSQL", sub: "Warehouse" },
-        { id: "sql", label: "SQL marts", sub: "200+ transforms" },
+        { id: "sql", label: "SQL marts", sub: "80+ transforms" },
         { id: "reports", label: "Ops reports", sub: "Daily · weekly" },
         { id: "ci", label: "CI/CD", sub: "GH Actions · Docker" },
       ],
@@ -259,9 +259,9 @@ export const PROJECTS: ProjectCase[] = [
     },
     metrics: [
       { value: "9", label: "teams enabled" },
-      { value: "120", unit: "+ hrs/mo", label: "manual work eliminated" },
-      { value: "14", label: "internal services" },
-      { value: "200", unit: "+", label: "SQL transformations" },
+      { value: "40", unit: "+ hrs/mo", label: "manual work eliminated" },
+      { value: "8", label: "internal services" },
+      { value: "80", unit: "+", label: "SQL transformations" },
     ],
     stack: [
       "Python",
@@ -274,7 +274,7 @@ export const PROJECTS: ProjectCase[] = [
       "Redis",
     ],
     outcomes: [
-      "Cut monthly ops overhead by ~120 hours",
+      "Cut monthly ops overhead by ~40 hours",
       "Established the team's first observability + CI culture",
       "Built the reporting layer that scaled the business 3×",
     ],

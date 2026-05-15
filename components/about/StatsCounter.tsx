@@ -7,8 +7,8 @@ type Stat = { label: string; value: number; suffix?: string; prefix?: string; de
 
 const STATS: Stat[] = [
   { label: "Years engineering", value: 5, suffix: "+" },
-  { label: "Pipelines in prod", value: 120, suffix: "+" },
-  { label: "Events / second", value: 2.4, suffix: "M", decimals: 1 },
+  { label: "Pipelines in prod", value: 40, suffix: "+" },
+  { label: "Events / second", value: 50, suffix: "K" },
   { label: "Cost saved", value: 38, suffix: "%" },
 ];
 

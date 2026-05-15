@@ -8,10 +8,10 @@ This is the source for my personal portfolio. Built it to show the work I have a
 
 ## What I work on
 
-- Real time streaming on Spark Structured Streaming and Kafka. Sub 200 ms fraud decisioning at 2.4M events per second.
+- Real time streaming on Spark Structured Streaming and Kafka. Sub 250 ms fraud decisioning at 50K events per second.
 - Lakehouse design on Iceberg and Delta over S3. Adaptive query execution and partition aware compaction cutting nightly Spark cost by 38 percent.
 - AI in production pipelines. RAG over policy corpora, Titan embeddings into pgvector, document understanding with Bedrock for KYC.
-- Analytics engineering with dbt, Snowflake, and Redshift. Semantic layer powering 90 plus dashboards.
+- Analytics engineering with dbt, Snowflake, and Redshift. Semantic layer powering 30 plus dashboards.
 - Data quality and governance built into CI. Great Expectations, dbt tests, lineage, row level security, audit trails.
 
 ## Stack
