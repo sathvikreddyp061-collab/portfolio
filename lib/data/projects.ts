@@ -14,7 +14,7 @@ export type Metric = { value: string; unit?: string; label: string };
 export type ProjectCase = {
   id: string;
   era: string;
-  industry: string;        // e.g. "Global Investment Bank"
+  industry: string;        // e.g. "Financial Services"
   focus: string;           // e.g. "Real-time Risk"
   title: string;
   brief: string;
@@ -28,9 +28,9 @@ export type ProjectCase = {
 
 export const PROJECTS: ProjectCase[] = [
   {
-    id: "barclays",
+    id: "fintech",
     era: "2024 — Present",
-    industry: "Global Investment Bank",
+    industry: "Financial Services",
     focus: "Real-time Risk",
     title: "Sub-second fraud detection on a 2.4M event/sec spine",
     brief:
@@ -115,7 +115,7 @@ export const PROJECTS: ProjectCase[] = [
     accent: "#22F0FF",
   },
   {
-    id: "abcbs",
+    id: "healthcare",
     era: "2022 — 2024",
     industry: "US Healthcare Insurance",
     focus: "Claims & Member Analytics",
@@ -203,7 +203,7 @@ export const PROJECTS: ProjectCase[] = [
     accent: "#7C5CFF",
   },
   {
-    id: "narvee",
+    id: "enterprise",
     era: "2020 — 2022",
     industry: "Enterprise Services",
     focus: "Internal Automation",

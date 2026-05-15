@@ -13,22 +13,22 @@ import { ProjectCase } from "@/lib/data/projects";
  */
 export default function ProjectVisual({ project }: { project: ProjectCase }) {
   switch (project.id) {
-    case "barclays":
-      return <BarclaysVisual color={project.accent} />;
-    case "abcbs":
-      return <ABCBSVisual color={project.accent} />;
-    case "narvee":
-      return <NarveeVisual color={project.accent} />;
+    case "fintech":
+      return <FintechVisual color={project.accent} />;
+    case "healthcare":
+      return <HealthcareVisual color={project.accent} />;
+    case "enterprise":
+      return <EnterpriseVisual color={project.accent} />;
     default:
       return null;
   }
 }
 
-/* ---------------------------- BARCLAYS — fraud feed ---------------------------- */
+/* ---------------------------- Financial — fraud feed ---------------------------- */
 
 type Decision = { id: string; status: "APPROVED" | "BLOCKED" | "REVIEW"; latency: number };
 
-function BarclaysVisual({ color }: { color: string }) {
+function FintechVisual({ color }: { color: string }) {
   // Deterministic initial state so SSR matches the first client render.
   // Random data is added in useEffect (after hydration).
   const [tps, setTps] = useState(2.4);
@@ -125,9 +125,9 @@ function seedDecisions(n: number): Decision[] {
   return Array.from({ length: n }, makeDecision);
 }
 
-/* --------------------------- ABCBS — claims pipeline --------------------------- */
+/* --------------------------- Healthcare — claims pipeline --------------------------- */
 
-function ABCBSVisual({ color }: { color: string }) {
+function HealthcareVisual({ color }: { color: string }) {
   // Deterministic initial state — random values populate after mount.
   const [bars, setBars] = useState<number[]>(() => new Array(14).fill(55));
   const [claimsToday, setClaimsToday] = useState(1_482_117);
@@ -225,9 +225,9 @@ function ABCBSVisual({ color }: { color: string }) {
   );
 }
 
-/* ---------------------------- NARVEE — services health -------------------------- */
+/* ---------------------------- Enterprise — services health -------------------------- */
 
-function NarveeVisual({ color }: { color: string }) {
+function EnterpriseVisual({ color }: { color: string }) {
   const services = useMemo(
     () => [
       { name: "Flask · Auth", lat: 42 },

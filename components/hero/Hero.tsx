@@ -248,7 +248,7 @@ export default function Hero() {
         <div className="container-app flex items-center justify-between py-4 text-[10px] uppercase tracking-[0.32em] text-white/55">
           <span className="font-mono text-neon-cyan">// domains served</span>
           <div className="hidden items-center gap-6 md:flex">
-            <span>Global Investment Banking</span>
+            <span>Financial Services</span>
             <span className="h-1 w-1 rounded-full bg-white/30" />
             <span>US Healthcare Insurance</span>
             <span className="h-1 w-1 rounded-full bg-white/30" />

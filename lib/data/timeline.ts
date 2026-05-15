@@ -28,7 +28,7 @@ export const DOMAINS: Domain[] = [
       { label: "Latency P99", value: "180ms" },
       { label: "Models in prod", value: "11" },
     ],
-    projectId: "barclays",
+    projectId: "fintech",
     accent: "cyan",
   },
   {
@@ -48,7 +48,7 @@ export const DOMAINS: Domain[] = [
       { label: "Daily claims", value: "1.6M" },
       { label: "DAGs", value: "240+" },
     ],
-    projectId: "abcbs",
+    projectId: "healthcare",
     accent: "violet",
   },
   {
@@ -68,7 +68,7 @@ export const DOMAINS: Domain[] = [
       { label: "Hours saved/mo", value: "120+" },
       { label: "Services", value: "14" },
     ],
-    projectId: "narvee",
+    projectId: "enterprise",
     accent: "magenta",
   },
 ];
