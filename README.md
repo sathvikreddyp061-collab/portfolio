@@ -22,15 +22,6 @@ Python, PySpark, SQL, Kafka, Airflow, dbt, Snowflake, Redshift, Iceberg, Delta L
 
 Next.js (App Router), React 18, TypeScript, Tailwind CSS, Three.js with React Three Fiber and Drei, custom GLSL shaders, Framer Motion, Lenis smooth scrolling, animated SVG pipeline diagrams.
 
-## Running it locally
-
-```bash
-pnpm install
-pnpm dev
-```
-
-Open http://localhost:3000. Needs Node 18 or newer.
-
 ## Reach me
 
 - Portfolio: [portfolio-fawn-beta-zjvbplk2vx.vercel.app](https://portfolio-fawn-beta-zjvbplk2vx.vercel.app)
