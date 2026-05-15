@@ -3,6 +3,9 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   compress: true,
+  // Next 14's bundled ESLint passes deprecated options to modern ESLint,
+  // which fails the lint step on Vercel. Run lint separately, not at build.
+  eslint: { ignoreDuringBuilds: true },
   images: {
     formats: ["image/avif", "image/webp"],
   },

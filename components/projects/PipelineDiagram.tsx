@@ -87,6 +87,11 @@ export default function PipelineDiagram({
 
   return (
     <div ref={wrapperRef} className="hairline relative overflow-hidden rounded-2xl bg-black/30 p-2">
+      {/* Right-edge fade tells mobile users the diagram scrolls horizontally. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-y-2 right-2 z-10 w-12 rounded-r-2xl bg-gradient-to-l from-black/80 to-transparent md:hidden"
+      />
       <div className="overflow-x-auto">
         <svg
           ref={svgRef}

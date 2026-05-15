@@ -502,53 +502,59 @@ export default function TechUniverse() {
             active ? "lg:grid-cols-[3fr_2fr]" : "grid-cols-1"
           }`}
         >
-          <div
-            ref={canvasWrapRef}
-            className="glass relative h-[540px] w-full overflow-hidden rounded-3xl md:h-[640px]"
-          >
-            {/* Coordinate frame */}
-            <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3 py-1 backdrop-blur-md">
-              <span className="h-1.5 w-1.5 animate-glow rounded-full bg-neon-cyan shadow-[0_0_10px_rgba(34,240,255,0.9)]" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/70">
-                cluster · live
-              </span>
-            </div>
-            <div className="pointer-events-none absolute right-4 top-4 z-10 rounded-full border border-white/10 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.28em] text-white/70 backdrop-blur-md">
-              drag · zoom · click
-            </div>
-
-            <Canvas
-              dpr={isTouch ? [1, 1] : [1, 1.4]}
-              frameloop={canvasVisible ? "always" : "demand"}
-              gl={{
-                antialias: false,
-                alpha: true,
-                powerPreference: "high-performance",
-                stencil: false,
-                depth: true,
-              }}
-              camera={{ position: [0, 1.6, 8], fov: 55 }}
+          {/* The WebGL canvas is desktop-only. iOS Safari aggressively kills
+              tabs that hold a heavy WebGL context, which was crashing the
+              page on phones. Mobile gets the legend grid below as the
+              primary navigation. */}
+          {!isTouch && (
+            <div
+              ref={canvasWrapRef}
+              className="glass relative h-[540px] w-full overflow-hidden rounded-3xl md:h-[640px]"
             >
-              <color attach="background" args={["#02030a"]} />
-              <fog attach="fog" args={["#02030a", 9, 18]} />
-              <Suspense fallback={null}>
-                <Scene
-                  hovered={hovered}
-                  setHovered={setHovered}
-                  onSelect={setActive}
-                  isTouch={isTouch}
+              {/* Coordinate frame */}
+              <div className="pointer-events-none absolute left-4 top-4 z-10 flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3 py-1 backdrop-blur-md">
+                <span className="h-1.5 w-1.5 animate-glow rounded-full bg-neon-cyan shadow-[0_0_10px_rgba(34,240,255,0.9)]" />
+                <span className="font-mono text-[10px] uppercase tracking-[0.28em] text-white/70">
+                  cluster · live
+                </span>
+              </div>
+              <div className="pointer-events-none absolute right-4 top-4 z-10 rounded-full border border-white/10 bg-black/40 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.28em] text-white/70 backdrop-blur-md">
+                drag · zoom · click
+              </div>
+
+              <Canvas
+                dpr={[1, 1.4]}
+                frameloop={canvasVisible ? "always" : "demand"}
+                gl={{
+                  antialias: false,
+                  alpha: true,
+                  powerPreference: "high-performance",
+                  stencil: false,
+                  depth: true,
+                }}
+                camera={{ position: [0, 1.6, 8], fov: 55 }}
+              >
+                <color attach="background" args={["#02030a"]} />
+                <fog attach="fog" args={["#02030a", 9, 18]} />
+                <Suspense fallback={null}>
+                  <Scene
+                    hovered={hovered}
+                    setHovered={setHovered}
+                    onSelect={setActive}
+                    isTouch={isTouch}
+                  />
+                </Suspense>
+                <OrbitControls
+                  enablePan={false}
+                  enableZoom
+                  minDistance={6}
+                  maxDistance={12}
+                  autoRotate
+                  autoRotateSpeed={0.4}
                 />
-              </Suspense>
-              <OrbitControls
-                enablePan={false}
-                enableZoom={!isTouch}
-                minDistance={6}
-                maxDistance={12}
-                autoRotate
-                autoRotateSpeed={isTouch ? 0.25 : 0.4}
-              />
-            </Canvas>
-          </div>
+              </Canvas>
+            </div>
+          )}
 
           <EcosystemPanel cluster={active} onClose={() => setActive(null)} />
         </div>
