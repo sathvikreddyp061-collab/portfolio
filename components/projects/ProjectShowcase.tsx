@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { ProjectCase } from "@/lib/data/projects";
 import PipelineDiagram from "./PipelineDiagram";
 import ProjectVisual from "./ProjectVisual";
+import { useIsTouch } from "@/lib/hooks/useIsTouch";
 
 export default function ProjectShowcase({
   project,
@@ -14,12 +15,17 @@ export default function ProjectShowcase({
   index: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
+  const isTouch = useIsTouch();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"],
   });
-  const y = useTransform(scrollYProgress, [0, 1], [40, -40]);
-  const halo = useTransform(scrollYProgress, [0, 0.5, 1], [0.25, 0.55, 0.25]);
+  // Scroll-bound transforms cause repaint jitter on mobile while the iOS Safari
+  // URL bar animates. Hold them flat on touch devices.
+  const rawY = useTransform(scrollYProgress, [0, 1], [40, -40]);
+  const rawHalo = useTransform(scrollYProgress, [0, 0.5, 1], [0.25, 0.55, 0.25]);
+  const y = isTouch ? 0 : rawY;
+  const halo = isTouch ? 0.35 : rawHalo;
 
   return (
     <article

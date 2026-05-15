@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { Pipeline } from "@/lib/data/projects";
 
 type Layout = {
@@ -63,6 +63,11 @@ export default function PipelineDiagram({
 }) {
   const layout = useMemo(() => buildLayout(pipeline), [pipeline]);
   const svgRef = useRef<SVGSVGElement>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  // Tracking the wrapping <div> is reliable across browsers.
+  // IntersectionObserver on SVG <g> children is flaky, especially on mobile,
+  // which left nodes stuck at opacity 0.
+  const inView = useInView(wrapperRef, { once: true, margin: "-10% 0px" });
 
   // Animate the dashed flow on edges
   useEffect(() => {
@@ -81,7 +86,7 @@ export default function PipelineDiagram({
   }, []);
 
   return (
-    <div className="hairline relative overflow-hidden rounded-2xl bg-black/30 p-2">
+    <div ref={wrapperRef} className="hairline relative overflow-hidden rounded-2xl bg-black/30 p-2">
       <div className="overflow-x-auto">
         <svg
           ref={svgRef}
@@ -172,8 +177,7 @@ export default function PipelineDiagram({
                   strokeDasharray="6 14"
                   strokeLinecap="round"
                   initial={{ pathLength: 0, opacity: 0 }}
-                  whileInView={{ pathLength: 1, opacity: 1 }}
-                  viewport={{ once: true, margin: "-10% 0px" }}
+                  animate={inView ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
                   transition={{ duration: 1.2, delay: i * 0.04, ease: [0.2, 0.8, 0.2, 1] }}
                   style={{
                     filter: "url(#glow)",
@@ -191,8 +195,7 @@ export default function PipelineDiagram({
               <motion.g
                 key={id}
                 initial={{ opacity: 0, y: 6 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-10% 0px" }}
+                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
                 transition={{ duration: 0.5, delay: i * 0.05 }}
               >
                 <rect
