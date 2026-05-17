@@ -7,6 +7,9 @@ const LINES = [
   { tag: "boot", text: "init handshake → secure channel" },
   { tag: "auth", text: "verify identity · keypair OK" },
   { tag: "ping", text: "round-trip 14ms · channel stable" },
+  { tag: "repo", text: "fintech  →  fraud-streaming    · 5K eps · AUC 0.892" },
+  { tag: "repo", text: "health   →  claims-lakehouse   · 55K claims · 26/26 dbt" },
+  { tag: "repo", text: "retail   →  retail-cdc         · 1.1M CDC · exactly-once" },
   { tag: "ready", text: "awaiting your transmission…" },
 ];
 
