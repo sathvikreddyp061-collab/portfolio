@@ -110,15 +110,33 @@ export default function ProjectShowcase({
               <span className="font-mono text-[10px] uppercase tracking-[0.32em]" style={{ color: project.accent }}>
                 // narrative
               </span>
-              <span className="flex items-center gap-1.5">
-                <span
-                  className="h-1.5 w-1.5 animate-glow rounded-full"
-                  style={{ background: project.accent, boxShadow: `0 0 10px ${project.accent}` }}
-                />
-                <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/55">
-                  production · live
+              {project.repoUrl ? (
+                <a
+                  href={project.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-1.5 rounded-full px-2.5 py-1 transition-colors hover:bg-white/[0.06]"
+                  style={{ boxShadow: `inset 0 0 0 1px ${project.accent}44` }}
+                >
+                  <span
+                    className="h-1.5 w-1.5 animate-glow rounded-full"
+                    style={{ background: project.accent, boxShadow: `0 0 10px ${project.accent}` }}
+                  />
+                  <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/75 group-hover:text-white">
+                    view on github →
+                  </span>
+                </a>
+              ) : (
+                <span className="flex items-center gap-1.5">
+                  <span
+                    className="h-1.5 w-1.5 animate-glow rounded-full"
+                    style={{ background: project.accent, boxShadow: `0 0 10px ${project.accent}` }}
+                  />
+                  <span className="font-mono text-[9px] uppercase tracking-[0.28em] text-white/55">
+                    production · live
+                  </span>
                 </span>
-              </span>
+              )}
             </div>
             <div className="mt-4 space-y-3.5 text-sm leading-relaxed text-white/75 md:text-[15px]">
               {project.narrative.map((p, i) => (
