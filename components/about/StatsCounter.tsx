@@ -20,7 +20,7 @@ function Counter({ stat }: { stat: Stat }) {
   useEffect(() => {
     if (!inView) return;
     const start = performance.now();
-    const duration = 1500;
+    const duration = 700;
     let raf = 0;
     const tick = (t: number) => {
       const p = Math.min(1, (t - start) / duration);
@@ -59,7 +59,7 @@ export default function StatsCounter() {
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-15% 0px" }}
-      transition={{ duration: 0.7 }}
+      transition={{ duration: 0.3 }}
       className="grid grid-cols-2 gap-4 md:grid-cols-4"
     >
       {STATS.map((s) => (

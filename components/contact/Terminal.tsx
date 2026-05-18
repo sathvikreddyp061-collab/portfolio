@@ -16,7 +16,7 @@ const LINES = [
 export default function Terminal() {
   const [shown, setShown] = useState(0);
   useEffect(() => {
-    const id = setInterval(() => setShown((v) => Math.min(v + 1, LINES.length)), 380);
+    const id = setInterval(() => setShown((v) => Math.min(v + 1, LINES.length)), 160);
     return () => clearInterval(id);
   }, []);
 
@@ -39,7 +39,7 @@ export default function Terminal() {
             key={i}
             initial={{ opacity: 0, x: -8 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.35 }}
+            transition={{ duration: 0.18 }}
             className="flex gap-3"
           >
             <span className="w-16 text-neon-cyan">[{l.tag}]</span>

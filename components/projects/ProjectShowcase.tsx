@@ -48,7 +48,7 @@ export default function ProjectShowcase({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-15% 0px" }}
-          transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+          transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
           className="mb-8"
         >
           <div className="mb-3 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.32em] text-white/55">
@@ -145,7 +145,7 @@ export default function ProjectShowcase({
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-15% 0px" }}
-              transition={{ duration: 0.6, delay: i * 0.05 }}
+              transition={{ duration: 0.3, delay: i * 0.025 }}
               className="hairline relative overflow-hidden rounded-xl bg-white/[0.02] p-4"
             >
               <div className="font-display text-3xl font-semibold tracking-tight text-white">

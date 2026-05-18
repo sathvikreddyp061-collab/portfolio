@@ -42,7 +42,7 @@ export default function Timeline() {
             initial={{ opacity: 0, y: 32 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-15% 0px" }}
-            transition={{ duration: 0.7, delay: i * 0.1, ease: [0.2, 0.8, 0.2, 1] }}
+            transition={{ duration: 0.3, delay: i * 0.03, ease: [0.2, 0.8, 0.2, 1] }}
             data-cursor="hover"
             className="glass group relative flex flex-col gap-5 overflow-hidden rounded-2xl p-6 transition hover:-translate-y-1 hover:bg-white/[0.03]"
             style={{ ["--ring" as any]: a.ring }}

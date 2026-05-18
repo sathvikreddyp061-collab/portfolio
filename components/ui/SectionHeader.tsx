@@ -38,7 +38,7 @@ export default function SectionHeader({
         initial={{ opacity: 0, y: 24 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-15% 0px" }}
-        transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+        transition={{ duration: 0.35, ease: [0.2, 0.8, 0.2, 1] }}
         className="text-balance font-display text-4xl font-semibold leading-[1.05] tracking-tight md:text-6xl"
       >
         {title}
@@ -49,7 +49,7 @@ export default function SectionHeader({
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-10% 0px" }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.2, 0.8, 0.2, 1] }}
+          transition={{ duration: 0.35, delay: 0.05, ease: [0.2, 0.8, 0.2, 1] }}
           className="max-w-2xl text-pretty text-base leading-relaxed text-white/65 md:text-lg"
         >
           {subtitle}

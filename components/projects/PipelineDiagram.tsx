@@ -198,7 +198,7 @@ export default function PipelineDiagram({
                   className="pipeline-flow"
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={inView ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
-                  transition={{ duration: 1.2, delay: i * 0.04, ease: [0.2, 0.8, 0.2, 1] }}
+                  transition={{ duration: 0.5, delay: i * 0.02, ease: [0.2, 0.8, 0.2, 1] }}
                   style={{ filter: "url(#glow)" }}
                 />
               </g>
@@ -213,7 +213,7 @@ export default function PipelineDiagram({
                 key={id}
                 initial={{ opacity: 0, y: 6 }}
                 animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 6 }}
-                transition={{ duration: 0.5, delay: i * 0.05 }}
+                transition={{ duration: 0.25, delay: i * 0.02 }}
               >
                 <rect
                   x={p.x}
