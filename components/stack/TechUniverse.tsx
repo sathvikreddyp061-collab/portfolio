@@ -106,9 +106,12 @@ function Starfield({ count = 220 }: { count?: number }) {
 }
 
 /**
- * Energy beam — a glowing line from the core to a tracked node, plus a small
- * "data packet" orb that travels along the beam from core → node continuously.
- * Pulses brighter when the node is hovered.
+ * Energy beam — a glowing line from the core to a tracked node. Pulses
+ * brighter when the node is hovered. Previously also rendered a "data
+ * packet" sphere mesh that travelled the line every frame; that was 12
+ * extra meshes + 12 per-frame position/scale writes, which showed up as
+ * scroll jank when this section was in view. The line alone reads the
+ * same after the first second.
  */
 function EnergyBeam({
   targetRef,
@@ -121,8 +124,6 @@ function EnergyBeam({
 }) {
   const lineRef = useRef<THREE.Line>(null);
   const matRef = useRef<THREE.LineBasicMaterial>(null);
-  const orbRef = useRef<THREE.Mesh>(null);
-  const orbMatRef = useRef<THREE.MeshBasicMaterial>(null);
   const phase = useRef(Math.random());
   const geo = useMemo(() => {
     const g = new THREE.BufferGeometry();
@@ -130,7 +131,7 @@ function EnergyBeam({
     return g;
   }, []);
 
-  useFrame((state, dt) => {
+  useFrame((state) => {
     if (!lineRef.current || !matRef.current) return;
 
     // 1. Update line endpoints to track the (moving) node
@@ -143,48 +144,20 @@ function EnergyBeam({
     // 2. Pulse the line opacity in a sine wave (with hover boost)
     const pulse = 0.5 + 0.5 * Math.sin(state.clock.elapsedTime * 1.6 + phase.current * 8);
     matRef.current.opacity = (hovered ? 0.85 : 0.28) + pulse * 0.12;
-
-    // 3. Move the "data packet" orb along the beam, faster on hover
-    phase.current = (phase.current + dt * (hovered ? 1.1 : 0.45)) % 1;
-    if (orbRef.current) {
-      const t = phase.current;
-      orbRef.current.position.set(
-        targetRef.current.x * t,
-        targetRef.current.y * t,
-        targetRef.current.z * t
-      );
-      const s = hovered ? 0.18 : 0.10;
-      orbRef.current.scale.setScalar(s);
-    }
-    if (orbMatRef.current) {
-      orbMatRef.current.opacity = hovered ? 1 : 0.75;
-    }
   });
 
   return (
-    <>
-      {/* @ts-expect-error - r3f's <line> JSX intrinsic clashes with SVG line types */}
-      <line ref={lineRef} geometry={geo}>
-        <lineBasicMaterial
-          ref={matRef}
-          color={color}
-          transparent
-          opacity={0.4}
-          blending={THREE.AdditiveBlending}
-          depthWrite={false}
-        />
-      </line>
-      <mesh ref={orbRef}>
-        <sphereGeometry args={[1, 12, 12]} />
-        <meshBasicMaterial
-          ref={orbMatRef}
-          color={color}
-          transparent
-          depthWrite={false}
-          blending={THREE.AdditiveBlending}
-        />
-      </mesh>
-    </>
+    /* @ts-expect-error - r3f's <line> JSX intrinsic clashes with SVG line types */
+    <line ref={lineRef} geometry={geo}>
+      <lineBasicMaterial
+        ref={matRef}
+        color={color}
+        transparent
+        opacity={0.4}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+    </line>
   );
 }
 
@@ -402,8 +375,9 @@ function Scene({
       <pointLight position={[-6, -3, 3]} intensity={1.1} color="#7c5cff" />
       <pointLight position={[0, 0, -4]} intensity={0.6} color="#ff3cac" />
 
-      {/* Background starfield — fewer stars on mobile to save fillrate */}
-      <Starfield count={isTouch ? 90 : 220} />
+      {/* Background starfield — kept small. 220 was overkill: fill rate adds up
+          fast with AdditiveBlending + depthWrite:false on every star. */}
+      <Starfield count={isTouch ? 60 : 110} />
 
       <group ref={groupRef}>
         <CoreOrb />
@@ -523,7 +497,7 @@ export default function TechUniverse() {
               </div>
 
               <Canvas
-                dpr={[1, 1.4]}
+                dpr={1}
                 frameloop={canvasVisible ? "always" : "demand"}
                 gl={{
                   antialias: false,
@@ -544,13 +518,14 @@ export default function TechUniverse() {
                     isTouch={isTouch}
                   />
                 </Suspense>
+                {/* autoRotate forced a re-render every frame even when the user
+                    wasn't interacting. Mouse parallax in Scene already gives
+                    the universe motion; static camera lets the GPU breathe. */}
                 <OrbitControls
                   enablePan={false}
                   enableZoom
                   minDistance={6}
                   maxDistance={12}
-                  autoRotate
-                  autoRotateSpeed={0.4}
                 />
               </Canvas>
             </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Pipeline } from "@/lib/data/projects";
 
@@ -91,22 +91,12 @@ export default function PipelineDiagram({
   // IntersectionObserver on SVG <g> children is flaky, especially on mobile,
   // which left nodes stuck at opacity 0.
   const inView = useInView(wrapperRef, { once: true, margin: "-10% 0px" });
-
-  // Animate the dashed flow on edges
-  useEffect(() => {
-    const el = svgRef.current;
-    if (!el) return;
-    let raf = 0;
-    let last = performance.now();
-    const tick = (t: number) => {
-      const dt = (t - last) / 1000;
-      last = t;
-      el.style.setProperty("--flow-offset", `${(parseFloat(el.style.getPropertyValue("--flow-offset") || "0") - dt * 30).toFixed(2)}`);
-      raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+  // Note: the dashed flow used to be JS-animated via a per-diagram RAF that
+  // called setProperty('--flow-offset', ...) every frame. With three diagrams
+  // that was three RAFs writing styles forever, even when the diagrams were
+  // offscreen — visibly competing with scroll. It's now a pure CSS keyframe
+  // (see the <style jsx> block below) which the compositor can run on its
+  // own thread.
 
   return (
     <div ref={wrapperRef} className="hairline relative overflow-hidden rounded-2xl bg-black/30 p-2">
@@ -121,8 +111,8 @@ export default function PipelineDiagram({
           viewBox={`0 0 ${layout.width} ${layout.height}`}
           width="100%"
           height={layout.height}
-          style={{ minWidth: layout.width, ["--flow-offset" as any]: 0 }}
-          className="block"
+          style={{ minWidth: layout.width }}
+          className="block pipeline-svg"
         >
           <defs>
             <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
@@ -195,7 +185,9 @@ export default function PipelineDiagram({
                 <circle cx={aAnchor.x} cy={aAnchor.y} r="4" fill={endcap} />
                 {/* Endpoint glow at the target node */}
                 <circle cx={bAnchor.x} cy={bAnchor.y} r="4" fill={endcap} />
-                {/* Animated dashed flow on top */}
+                {/* Animated dashed flow on top — stroke-dashoffset driven by a
+                    pure CSS keyframe (see <style jsx>) so the compositor runs
+                    it without main-thread work. */}
                 <motion.path
                   d={d}
                   stroke={accent}
@@ -203,13 +195,11 @@ export default function PipelineDiagram({
                   fill="none"
                   strokeDasharray="6 14"
                   strokeLinecap="round"
+                  className="pipeline-flow"
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={inView ? { pathLength: 1, opacity: 1 } : { pathLength: 0, opacity: 0 }}
                   transition={{ duration: 1.2, delay: i * 0.04, ease: [0.2, 0.8, 0.2, 1] }}
-                  style={{
-                    filter: "url(#glow)",
-                    strokeDashoffset: "var(--flow-offset)",
-                  } as React.CSSProperties}
+                  style={{ filter: "url(#glow)" }}
                 />
               </g>
             );
@@ -292,6 +282,18 @@ export default function PipelineDiagram({
           flow · animated · gpu accelerated
         </span>
       </div>
+
+      <style jsx>{`
+        .pipeline-svg :global(.pipeline-flow) {
+          animation: pipeline-flow 0.9s linear infinite;
+        }
+        @keyframes pipeline-flow {
+          to { stroke-dashoffset: -20; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .pipeline-svg :global(.pipeline-flow) { animation: none; }
+        }
+      `}</style>
     </div>
   );
 }
