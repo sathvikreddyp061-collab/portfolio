@@ -27,15 +27,23 @@ export default function CustomCursor() {
     if (typeof window === "undefined") return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
+    // pointermove fires up to 1000Hz on modern hw. Keep this handler cheap —
+    // just stash the latest coords. The RAF loop is the only thing that touches
+    // the DOM, so movement events stay non-blocking.
     const onMove = (e: PointerEvent) => {
       target.current.x = e.clientX;
       target.current.y = e.clientY;
       visible.current = true;
+    };
 
+    // Hover detection used to run `el.closest(...)` on every pointermove —
+    // that's a DOM walk per pixel of motion. pointerover fires only when the
+    // cursor crosses an element boundary, which is the actual signal we need.
+    const HOVER_SELECTOR =
+      "a, button, [data-cursor='hover'], [role='button'], input, textarea, select, label, summary";
+    const onOver = (e: PointerEvent) => {
       const el = e.target as HTMLElement | null;
-      hover.current = !!el?.closest(
-        "a, button, [data-cursor='hover'], [role='button'], input, textarea, select, label, summary"
-      );
+      hover.current = !!el?.closest(HOVER_SELECTOR);
     };
 
     const onDown = () => (pressed.current = true);
@@ -44,6 +52,7 @@ export default function CustomCursor() {
     const onEnter = () => (visible.current = true);
 
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerover", onOver, { passive: true });
     window.addEventListener("pointerdown", onDown, { passive: true });
     window.addEventListener("pointerup", onUp, { passive: true });
     document.addEventListener("pointerleave", onLeave);
@@ -84,12 +93,13 @@ export default function CustomCursor() {
 
       if (ringRef.current) {
         const scale = isHover ? 1.85 : isPress ? 0.85 : 1;
+        // Dropped the rotateX/rotateY velocity tilt — preserve-3d + per-frame
+        // rotations on three axes force GPU compositor work that competed
+        // with scroll. Ring still spins in 2D, which reads the same on screen.
         ringRef.current.style.transform =
           `translate3d(${ring.current.x}px, ${ring.current.y}px, 0) ` +
           `translate(-50%, -50%) ` +
-          `rotateZ(${angle + ringRot * 0.05}deg) ` +
-          `rotateX(${vel.current.y * 0.4}deg) ` +
-          `rotateY(${vel.current.x * -0.4}deg) ` +
+          `rotate(${angle + ringRot * 0.05}deg) ` +
           `scale(${scale})`;
         ringRef.current.style.opacity = String(targetVisible * (isHover ? 1 : 0.8));
       }
@@ -102,6 +112,7 @@ export default function CustomCursor() {
 
     return () => {
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerover", onOver);
       window.removeEventListener("pointerdown", onDown);
       window.removeEventListener("pointerup", onUp);
       document.removeEventListener("pointerleave", onLeave);
@@ -120,7 +131,6 @@ export default function CustomCursor() {
         style={{
           background:
             "conic-gradient(from 0deg, rgba(34,240,255,0.9), rgba(124,92,255,0.9), rgba(255,60,172,0.9), rgba(34,240,255,0.9))",
-          transformStyle: "preserve-3d",
           transition: "opacity 220ms ease",
           WebkitMask:
             "radial-gradient(circle, transparent 62%, #000 63%, #000 100%)",

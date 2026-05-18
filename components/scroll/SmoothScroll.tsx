@@ -10,11 +10,14 @@ export default function SmoothScroll({ children }: { children: ReactNode }) {
     // Skip on touch devices — native momentum scroll on phones beats anything we can fake.
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
+    // Snappier feel: shorter ease-out means the page catches up to the wheel
+    // in ~0.8s instead of ~1.15s, so scrolling no longer feels like it's
+    // dragging behind the input.
     const lenis = new Lenis({
-      duration: 1.15,
-      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      duration: 0.8,
+      easing: (t: number) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
-      wheelMultiplier: 1,
+      wheelMultiplier: 1.15,
       touchMultiplier: 1.4,
     });
 
