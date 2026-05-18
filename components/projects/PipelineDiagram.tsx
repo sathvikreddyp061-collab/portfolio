@@ -44,14 +44,37 @@ function buildLayout(p: Pipeline): Layout {
   return { width, height, nodeW, nodeH, positions };
 }
 
-function pathBetween(
-  ax: number,
-  ay: number,
-  bx: number,
-  by: number
-) {
-  const mid = (ax + bx) / 2;
-  return `M ${ax} ${ay} C ${mid} ${ay}, ${mid} ${by}, ${bx} ${by}`;
+type Anchor = { x: number; y: number };
+type Box = { x: number; y: number; w: number; h: number };
+
+// Pick anchor sides + a smooth cubic that always leaves and arrives perpendicular
+// to the box edge it's attached to. Cases:
+//   - same column: bottom → top (or top → bottom) with vertical tangents
+//   - going right: right edge → left edge with horizontal tangents
+//   - going left:  left edge  → right edge with horizontal tangents
+// Returns the endpoints too so the calling code can position the glow dots
+// exactly on the box edge instead of guessing.
+function routeEdge(source: Box, target: Box): { d: string; a: Anchor; b: Anchor } {
+  const sCenter = { x: source.x + source.w / 2, y: source.y + source.h / 2 };
+  const tCenter = { x: target.x + target.w / 2, y: target.y + target.h / 2 };
+  const dx = tCenter.x - sCenter.x;
+  const dy = tCenter.y - sCenter.y;
+
+  // Same column (or columns overlap horizontally) → route vertically
+  if (Math.abs(dx) < source.w / 2 + target.w / 2) {
+    const goingDown = dy >= 0;
+    const a = { x: sCenter.x, y: goingDown ? source.y + source.h : source.y };
+    const b = { x: tCenter.x, y: goingDown ? target.y : target.y + target.h };
+    const midY = (a.y + b.y) / 2;
+    return { d: `M ${a.x} ${a.y} C ${a.x} ${midY}, ${b.x} ${midY}, ${b.x} ${b.y}`, a, b };
+  }
+
+  // Cross-column → route horizontally, anchoring on the side that faces the target
+  const goingRight = dx > 0;
+  const a = { x: goingRight ? source.x + source.w : source.x, y: sCenter.y };
+  const b = { x: goingRight ? target.x : target.x + target.w, y: tCenter.y };
+  const midX = (a.x + b.x) / 2;
+  return { d: `M ${a.x} ${a.y} C ${midX} ${a.y}, ${midX} ${b.y}, ${b.x} ${b.y}`, a, b };
 }
 
 export default function PipelineDiagram({
@@ -152,11 +175,10 @@ export default function PipelineDiagram({
             const a = layout.positions[e.from];
             const b = layout.positions[e.to];
             if (!a || !b) return null;
-            const ax = a.x + layout.nodeW;
-            const ay = a.y + layout.nodeH / 2;
-            const bx = b.x;
-            const by = b.y + layout.nodeH / 2;
-            const d = pathBetween(ax, ay, bx, by);
+            const { d, a: aAnchor, b: bAnchor } = routeEdge(
+              { x: a.x, y: a.y, w: layout.nodeW, h: layout.nodeH },
+              { x: b.x, y: b.y, w: layout.nodeW, h: layout.nodeH }
+            );
             const endcap = `url(#endcap-${accent.replace("#", "")})`;
             return (
               <g key={i}>
@@ -170,9 +192,9 @@ export default function PipelineDiagram({
                   strokeLinecap="round"
                 />
                 {/* Endpoint glow at the source node */}
-                <circle cx={ax} cy={ay} r="4" fill={endcap} />
+                <circle cx={aAnchor.x} cy={aAnchor.y} r="4" fill={endcap} />
                 {/* Endpoint glow at the target node */}
-                <circle cx={bx} cy={by} r="4" fill={endcap} />
+                <circle cx={bAnchor.x} cy={bAnchor.y} r="4" fill={endcap} />
                 {/* Animated dashed flow on top */}
                 <motion.path
                   d={d}
