@@ -74,7 +74,7 @@ export default function Contact() {
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-15% 0px" }}
-          transition={{ duration: 0.7 }}
+          transition={{ duration: 0.3 }}
           className="glass group relative flex flex-col justify-between overflow-hidden rounded-3xl p-6 md:p-10"
         >
           <div
@@ -153,7 +153,7 @@ export default function Contact() {
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.04 }}
+                transition={{ duration: 0.25, delay: i * 0.02 }}
                 className="hairline group relative overflow-hidden rounded-2xl bg-white/[0.02] p-4 transition hover:bg-white/[0.05]"
               >
                 <div className="flex items-center gap-3">

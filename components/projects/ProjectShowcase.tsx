@@ -1,11 +1,10 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRef } from "react";
 import { ProjectCase } from "@/lib/data/projects";
 import PipelineDiagram from "./PipelineDiagram";
 import ProjectVisual from "./ProjectVisual";
-import { useIsTouch } from "@/lib/hooks/useIsTouch";
 
 export default function ProjectShowcase({
   project,
@@ -15,17 +14,12 @@ export default function ProjectShowcase({
   index: number;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const isTouch = useIsTouch();
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  // Scroll-bound transforms cause repaint jitter on mobile while the iOS Safari
-  // URL bar animates. Hold them flat on touch devices.
-  const rawY = useTransform(scrollYProgress, [0, 1], [40, -40]);
-  const rawHalo = useTransform(scrollYProgress, [0, 0.5, 1], [0.25, 0.55, 0.25]);
-  const y = isTouch ? 0 : rawY;
-  const halo = isTouch ? 0.35 : rawHalo;
+  // Previously this section ran two useTransform subscriptions tied to
+  // scrollYProgress (a `y` translate on the whole grid and a halo opacity
+  // pulse). With three cases on the page that was six scroll-bound RAF
+  // listeners fighting Lenis on every wheel tick — visible as scroll lag.
+  // Halo is now a static value; the y-parallax is gone entirely.
+  const halo = 0.35;
 
   return (
     <article
@@ -34,7 +28,7 @@ export default function ProjectShowcase({
       style={{ ["--accent" as any]: project.accent }}
     >
       {/* Mood halo */}
-      <motion.div
+      <div
         aria-hidden
         style={{ opacity: halo }}
         className="pointer-events-none absolute -inset-x-32 -top-24 -z-10 h-[60%]"
@@ -45,7 +39,7 @@ export default function ProjectShowcase({
             background: `radial-gradient(60% 50% at 50% 30%, ${project.accent}33, transparent 70%)`,
           }}
         />
-      </motion.div>
+      </div>
 
       <div className="container-app relative">
         {/* Domain banner — industry as huge accent text, focus as subtitle. The
@@ -54,7 +48,7 @@ export default function ProjectShowcase({
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-15% 0px" }}
-          transition={{ duration: 0.7, ease: [0.2, 0.8, 0.2, 1] }}
+          transition={{ duration: 0.3, ease: [0.2, 0.8, 0.2, 1] }}
           className="mb-8"
         >
           <div className="mb-3 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.32em] text-white/55">
@@ -86,10 +80,7 @@ export default function ProjectShowcase({
 
         {/* Header — title+brief on the left, project narrative repositioned
             into the right column (was empty / context card). */}
-        <motion.div
-          style={{ y }}
-          className="grid items-start gap-8 md:grid-cols-[1.1fr_1fr] md:gap-12"
-        >
+        <div className="grid items-start gap-8 md:grid-cols-[1.1fr_1fr] md:gap-12">
           <div>
             <h3 className="max-w-3xl font-display text-3xl font-semibold leading-[1.05] tracking-tight md:text-5xl">
               {project.title}
@@ -144,7 +135,7 @@ export default function ProjectShowcase({
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Metrics */}
         <div className="mt-10 grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -154,7 +145,7 @@ export default function ProjectShowcase({
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-15% 0px" }}
-              transition={{ duration: 0.6, delay: i * 0.05 }}
+              transition={{ duration: 0.3, delay: i * 0.025 }}
               className="hairline relative overflow-hidden rounded-xl bg-white/[0.02] p-4"
             >
               <div className="font-display text-3xl font-semibold tracking-tight text-white">
