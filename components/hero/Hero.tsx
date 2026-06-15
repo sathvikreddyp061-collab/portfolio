@@ -9,11 +9,11 @@ import { useIsTouch } from "@/lib/hooks/useIsTouch";
 
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.09, delayChildren: 0.25 } },
+  show: { transition: { staggerChildren: 0.035, delayChildren: 0.06 } },
 };
 const item = {
-  hidden: { opacity: 0, y: 26 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.85, ease: [0.2, 0.8, 0.2, 1] } },
+  hidden: { opacity: 0, y: 18 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.2, 0.8, 0.2, 1] } },
 };
 
 export default function Hero() {
@@ -231,7 +231,7 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.9, delay: 1 }}
+        transition={{ duration: 0.35, delay: 0.25 }}
         className="pointer-events-none absolute bottom-28 right-8 z-10 hidden flex-col items-end gap-2 md:flex"
       >
         <span className="rounded-full border border-white/15 bg-black/55 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.32em] text-white/85 backdrop-blur-md">

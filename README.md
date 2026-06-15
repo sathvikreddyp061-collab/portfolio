@@ -27,3 +27,4 @@ Next.js (App Router), React 18, TypeScript, Tailwind CSS, Three.js with React Th
 - Portfolio: [portfolio-fawn-beta-zjvbplk2vx.vercel.app](https://portfolio-fawn-beta-zjvbplk2vx.vercel.app)
 - LinkedIn: [linkedin.com/in/sathvik-0d138](https://linkedin.com/in/sathvik-0d138)
 - Email: sathvikreddyp061@gmail.com
+- phone : +1 (940)-220-9117
