@@ -10,7 +10,7 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
   },
   experimental: {
-    optimizePackageImports: ["three", "@react-three/drei", "@react-three/fiber", "framer-motion", "gsap"],
+    optimizePackageImports: ["three", "@react-three/drei", "@react-three/fiber", "framer-motion"],
   },
   webpack: (config) => {
     config.module.rules.push({

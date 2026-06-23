@@ -9,5 +9,7 @@ dist
 .vercel
 .turbo
 .eslintcache
+*.tsbuildinfo
 next-env.d.ts
 portfolio.md
+CLAUDE.md
