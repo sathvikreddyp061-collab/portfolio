@@ -157,7 +157,7 @@ export default function Hero() {
           <motion.div variants={item} className="flex flex-wrap items-center gap-3">
             <span className="chip">
               <span className="h-1.5 w-1.5 animate-glow rounded-full bg-neon-cyan shadow-[0_0_10px_rgba(34,240,255,0.9)]" />
-              Frisco, Texas · Open to remote, hybrid, on-site
+              Data Engineer · Streaming · Lakehouses · AI in production
             </span>
           </motion.div>
 

@@ -26,8 +26,6 @@ export default function Footer() {
           <a href="tel:+19402209117" data-cursor="hover" className="hover:text-white">
             +1 940 220 9117
           </a>
-          <span className="h-1 w-1 rounded-full bg-white/30" />
-          <span>Frisco · Texas</span>
         </div>
 
         <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.32em] text-white/45">
