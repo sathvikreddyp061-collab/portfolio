@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useRef } from "react";
+import { track } from "@vercel/analytics";
 import { ProjectCase } from "@/lib/data/projects";
 import PipelineDiagram from "./PipelineDiagram";
 import ProjectVisual from "./ProjectVisual";
@@ -106,6 +107,7 @@ export default function ProjectShowcase({
                   href={project.repoUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => track("project_repo_click", { project: project.id })}
                   className="group flex items-center gap-1.5 rounded-full px-2.5 py-1 transition-colors hover:bg-white/[0.06]"
                   style={{ boxShadow: `inset 0 0 0 1px ${project.accent}44` }}
                 >
