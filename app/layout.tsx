@@ -3,7 +3,7 @@ import "./globals.css";
 import Providers from "./providers";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://sathvikreddy.dev"),
+  metadataBase: new URL("https://portfolio-fawn-beta-zjvbplk2vx.vercel.app"),
   title: {
     default: "Sathvik Reddy Puli — Senior Data Engineer",
     template: "%s · Sathvik Reddy Puli",
@@ -27,6 +27,7 @@ export const metadata: Metadata = {
   creator: "Sathvik Reddy Puli",
   openGraph: {
     type: "website",
+    url: "https://portfolio-fawn-beta-zjvbplk2vx.vercel.app",
     title: "Sathvik Reddy Puli — Senior Data Engineer",
     description:
       "Cinematic portfolio of a senior data engineer building enterprise-grade real-time data systems.",
