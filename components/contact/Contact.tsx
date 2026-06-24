@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { track } from "@vercel/analytics";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CyberGrid from "@/components/ui/CyberGrid";
 import Terminal from "./Terminal";
@@ -71,6 +72,7 @@ export default function Contact() {
           target="_blank"
           rel="noreferrer"
           data-cursor="hover"
+          onClick={() => track("contact_book_call")}
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-15% 0px" }}
@@ -150,6 +152,7 @@ export default function Contact() {
                 target={c.href.startsWith("http") ? "_blank" : undefined}
                 rel="noreferrer"
                 data-cursor="hover"
+                onClick={() => track("contact_channel_click", { channel: c.label })}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}

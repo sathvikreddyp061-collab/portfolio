@@ -5,6 +5,7 @@ import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { useEffect, useRef } from "react";
 import RoleCycler from "./RoleCycler";
 import MagneticButton from "@/components/ui/MagneticButton";
+import { track } from "@vercel/analytics";
 import { useIsTouch } from "@/lib/hooks/useIsTouch";
 
 const stagger = {
@@ -197,11 +198,15 @@ export default function Hero() {
 
           {/* CTAs */}
           <motion.div variants={item} className="mt-2 flex flex-wrap items-center gap-4">
-            <MagneticButton href="#projects">
+            <MagneticButton href="#projects" onClick={() => track("hero_enter_the_work")}>
               <span className="h-1.5 w-1.5 rounded-full bg-neon-cyan shadow-[0_0_10px_rgba(34,240,255,0.9)]" />
               Enter the work
             </MagneticButton>
-            <MagneticButton href="#contact" className="border-white/20 bg-transparent">
+            <MagneticButton
+              href="#contact"
+              className="border-white/20 bg-transparent"
+              onClick={() => track("hero_open_a_channel")}
+            >
               Open a channel →
             </MagneticButton>
           </motion.div>
